@@ -3,7 +3,7 @@ A command line tool to generate JWT access tokens and random signing keys.
 
 # Purpose
 
-This tool generates access tokens on the command line to test server API integration. Quickly edit and run. Generate tokens for different scenarios to test server API.
+This tool generates access tokens on the command line to test server API integration with [Gitea](https://gitea.io), a lightweight self-hosted git service. Quickly edit and run. Generate tokens for different scenarios to test server API response.
 
 The token is signed with HS256 algorithm. The token can be used to check access on API routes, or for deployment to integrated servers.
 
@@ -15,10 +15,16 @@ GITEA_ROOT_SERVER_TOKEN_AUDIENCE
 ```
 the name to include in standard claims of JWT token.
 
+
 ```
 GITEA_ROOT_SERVER_TOKEN_SIGNING_SECRET 
 ```
 The secret key to sign the access tokens. The signing key should be base64 url encoded, and must be at least 32 bytes when decoded. If the key can not be decoded, or the key is less than 32 bytes, this tool will generate a random key and use the random key instead.
+
+
+# Why creating this tool? Why not using Gitea GUI to create an access token?
+
+Server token is a special access token. It has super user privilege, uses a different key to sign, and may not be associated with a real user on Gitea instance. 
 
 
 # Installation
@@ -47,7 +53,7 @@ go run server_token.go
 
 # Caveats
 
-This tool is meant to run on the command line to get base64 URL encoded key and token. It will simply throw out errors and exit if for some reason it can not generate random bytes. 
+This tool is meant to run on the command line to generate base64 URL encoded key and token for testing or deployment. It will simply throw out errors and exit if for some reason it can not generate random bytes. It does not parse or verify tokens.
 
 The pseudo random bytes are generated with crypto/rand library included in Golang package. 
 
